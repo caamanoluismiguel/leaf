@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Last Light | A Study in Senescence</title>
+    <title>The Last Light | Chromatic Journey</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,405 +14,731 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0a;
-            --bg-secondary: #121212;
-            --text-primary: #f5f5f5;
-            --text-secondary: #a8a8a8;
-            --accent: #c44536;
-            --serif: 'Playfair Display', serif;
-            --sans: 'Inter', sans-serif;
-        }
-
         body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: var(--sans);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
+            background: #000;
+            color: white;
         }
 
-        .container {
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 80px 0;
-        }
-
-        .hero-title {
-            font-family: var(--serif);
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 1s ease-out 0.3s forwards;
-        }
-
-        .hero-subtitle {
-            font-family: var(--serif);
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-style: italic;
-            font-weight: 400;
-            color: var(--accent);
-            margin-bottom: 32px;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 1s ease-out 0.6s forwards;
-        }
-
-        .hero-meta {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            font-weight: 300;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 1s ease-out 0.9s forwards;
-        }
-
-        /* Audio Player */
-        .audio-control {
+        /* Chromatic Background - Transitions from Green to Red */
+        .chromatic-bg {
             position: fixed;
-            bottom: 32px;
-            right: 32px;
-            z-index: 1000;
-            opacity: 0;
-            animation: fadeInUp 1s ease-out 1.2s forwards;
-        }
-
-        .audio-btn {
-            background: var(--accent);
-            border: none;
-            border-radius: 50%;
-            width: 64px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 8px 24px rgba(196, 69, 54, 0.4);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .audio-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 32px rgba(196, 69, 54, 0.6);
-        }
-
-        .audio-btn:active {
-            transform: scale(0.95);
-        }
-
-        .audio-icon {
-            font-size: 24px;
-            color: var(--bg-primary);
-            font-weight: 500;
-        }
-
-        .audio-btn.playing .pause-icon {
-            display: block;
-        }
-
-        .audio-btn.playing .play-icon {
-            display: none;
-        }
-
-        .audio-btn:not(.playing) .pause-icon {
-            display: none;
-        }
-
-        .audio-btn:not(.playing) .play-icon {
-            display: block;
-        }
-
-        .audio-tooltip {
-            position: absolute;
-            right: 80px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(18, 18, 18, 0.95);
-            padding: 12px 20px;
-            border-radius: 8px;
-            white-space: nowrap;
-            font-size: 0.9rem;
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .audio-control:hover .audio-tooltip {
-            opacity: 1;
-        }
-
-        .progress-ring {
-            position: absolute;
-            top: -4px;
-            left: -4px;
-            width: 72px;
-            height: 72px;
-            transform: rotate(-90deg);
-        }
-
-        .progress-ring-circle {
-            stroke: var(--accent);
-            fill: transparent;
-            stroke-width: 2;
-            stroke-dasharray: 226;
-            stroke-dashoffset: 226;
-            transition: stroke-dashoffset 0.3s ease;
-            opacity: 0.3;
-        }
-
-        .audio-btn.playing .progress-ring-circle {
-            opacity: 1;
-        }
-
-        /* Video Section */
-        .video-section {
-            padding: 120px 0;
-            background: var(--bg-secondary);
-        }
-
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 360px;
-            margin: 0 auto;
-            aspect-ratio: 9 / 16;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            transform: translateY(40px);
-        }
-
-        .video-wrapper.visible {
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: -1;
+            transition: background 0.5s ease;
         }
 
-        /* Story Section */
-        .story {
-            padding: 120px 0;
+        /* Giant Parallax Leaf Background */
+        .leaf-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 150vw;
+            height: 150vh;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.15;
+            transition: all 0.3s ease;
+            pointer-events: none;
         }
 
-        .story-block {
-            margin-bottom: 80px;
-            opacity: 0;
-            transform: translateY(40px);
+        .leaf-bg svg {
+            width: 100%;
+            height: 100%;
+            filter: blur(40px);
         }
 
-        .story-block.visible {
-            animation: fadeInUp 0.8s ease-out forwards;
+        /* Parallax Layers */
+        .parallax-layer {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .story-heading {
-            font-family: var(--serif);
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
+        .parallax-particle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float-particle 20s infinite ease-in-out;
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(30px, -50px) scale(1.2);
+            }
+            50% {
+                transform: translate(-20px, -100px) scale(0.8);
+            }
+            75% {
+                transform: translate(40px, -70px) scale(1.1);
+            }
+        }
+
+        /* Vein Lines - Animated Background Pattern */
+        .vein-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.1;
+            background-image: 
+                linear-gradient(90deg, currentColor 1px, transparent 1px),
+                linear-gradient(180deg, currentColor 1px, transparent 1px);
+            background-size: 100px 100px;
+            animation: veinPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes veinPulse {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.15; }
+        }
+
+        /* Main Container */
+        .scroll-container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 60px 20px;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            perspective: 2000px;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 12vw, 10rem);
             font-weight: 700;
-            margin-bottom: 24px;
-            line-height: 1.2;
-        }
-
-        .story-text {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            max-width: 65ch;
-            font-weight: 300;
-        }
-
-        .story-text:last-child {
-            margin-bottom: 0;
-        }
-
-        .story-text.emphasis {
-            color: var(--text-primary);
-            font-weight: 400;
-            font-style: italic;
-        }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            background: var(--accent);
-            margin: 60px 0;
-            opacity: 0.5;
-        }
-
-        /* Footer */
-        .footer {
-            padding: 80px 0 40px;
             text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            margin-bottom: 30px;
+            transform-style: preserve-3d;
+            animation: heroReveal 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
-        .footer-text {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 300;
+        @keyframes heroReveal {
+            from {
+                opacity: 0;
+                transform: translateZ(-500px) rotateX(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateZ(0) rotateX(0deg);
+            }
         }
 
-        /* Animations */
+        .hero-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 5vw, 4rem);
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+        }
+
+        .hero-meta {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1s forwards;
+        }
+
         @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        @keyframes pulse {
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-out 1.5s forwards;
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, currentColor, transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollPulse {
             0%, 100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(20px);
+            }
+        }
+
+        /* Content Cards with 3D Parallax */
+        .content-card {
+            max-width: 900px;
+            width: 100%;
+            padding: 80px 60px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(30px) saturate(180%);
+            border-radius: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 30px 90px rgba(0, 0, 0, 0.5),
+                inset 0 0 80px rgba(255, 255, 255, 0.03);
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%,
+                transparent 50%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .content-card:hover::before {
+            opacity: 1;
+        }
+
+        .content-card:hover {
+            transform: translateY(-20px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 50px 120px rgba(0, 0, 0, 0.6),
+                inset 0 0 100px rgba(255, 255, 255, 0.05);
+        }
+
+        .section-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            font-weight: 700;
+            position: absolute;
+            top: -40px;
+            left: 40px;
+            opacity: 0.1;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 4px;
+            background: currentColor;
+            margin-top: 20px;
+            opacity: 0.5;
+        }
+
+        .story-text {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            line-height: 2;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .story-text em {
+            font-style: italic;
+            font-weight: 500;
+            opacity: 1;
+        }
+
+        .emphasis {
+            font-weight: 600;
+            font-style: italic;
+            position: relative;
+            display: inline-block;
+        }
+
+        .emphasis::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: currentColor;
+            opacity: 0.5;
+        }
+
+        /* Video Section */
+        .video-section {
+            min-height: 120vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            aspect-ratio: 9 / 16;
+            border-radius: 50px;
+            overflow: hidden;
+            box-shadow: 
+                0 50px 150px rgba(0, 0, 0, 0.8);
+            transform-style: preserve-3d;
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .video-container::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: linear-gradient(45deg, 
+                currentColor,
+                transparent 30%,
+                transparent 70%,
+                currentColor
+            );
+            border-radius: 60px;
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(40px);
+            animation: videoGlow 4s ease-in-out infinite;
+        }
+
+        @keyframes videoGlow {
+            0%, 100% {
+                opacity: 0.4;
                 transform: scale(1);
             }
             50% {
+                opacity: 0.7;
                 transform: scale(1.05);
             }
         }
 
+        .video-container:hover {
+            transform: scale(1.05) rotateY(5deg);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Audio Orb */
+        .audio-player {
+            position: fixed;
+            bottom: 50px;
+            right: 50px;
+            z-index: 1000;
+        }
+
+        .audio-orb {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(255, 255, 255, 0.3),
+                currentColor
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 
+                0 20px 60px currentColor,
+                inset 0 -10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .audio-orb:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 
+                0 30px 80px currentColor,
+                inset 0 -15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .audio-orb.playing {
+            animation: orbRotate 4s linear infinite;
+        }
+
+        @keyframes orbRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .audio-ripple {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid currentColor;
+            opacity: 0;
+        }
+
+        .audio-orb.playing .audio-ripple {
+            animation: rippleExpand 2s ease-out infinite;
+        }
+
+        @keyframes rippleExpand {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        .audio-icon {
+            font-size: 2.5rem;
+            color: white;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+            z-index: 1;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, 
+                #2d5016,
+                #7cb518,
+                #f7b801,
+                #f18701,
+                #d62828,
+                #8b0000
+            );
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 1001;
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        /* Floating Text Particles */
+        .text-particle {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            pointer-events: none;
+            animation: textFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes textFloat {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.1;
+            }
+            50% {
+                transform: translate(50px, -100px) rotate(10deg);
+                opacity: 0.2;
+            }
+        }
+
+        /* Navigation Mini Map */
+        .nav-minimap {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 2px solid transparent;
+        }
+
+        .nav-dot::before {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .nav-dot.active {
+            background: currentColor;
+            border-color: currentColor;
+            box-shadow: 0 0 20px currentColor;
+            transform: scale(1.3);
+        }
+
+        .nav-dot.active::before {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.5;
+        }
+
+        .nav-dot:hover {
+            background: currentColor;
+            transform: scale(1.2);
+        }
+
         /* Responsive */
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 20px;
+        @media (max-width: 768px) {
+            .content-card {
+                padding: 50px 30px;
             }
 
-            .story {
-                padding: 80px 0;
+            .section-number {
+                font-size: 5rem;
+                top: -20px;
+                left: 20px;
             }
 
-            .video-section {
-                padding: 80px 0;
+            .audio-player {
+                bottom: 30px;
+                right: 30px;
             }
 
-            .story-block {
-                margin-bottom: 60px;
-            }
-
-            .audio-control {
-                bottom: 24px;
-                right: 24px;
-            }
-
-            .audio-btn {
-                width: 56px;
-                height: 56px;
+            .audio-orb {
+                width: 80px;
+                height: 80px;
             }
 
             .audio-icon {
-                font-size: 20px;
+                font-size: 1.8rem;
             }
 
-            .progress-ring {
-                width: 64px;
-                height: 64px;
+            .nav-minimap {
+                right: 20px;
             }
 
-            .audio-tooltip {
-                display: none;
+            .leaf-bg {
+                width: 200vw;
+                height: 200vh;
             }
+        }
+
+        /* Hide scrollbar but keep functionality */
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
 <body>
-    
-    <!-- Audio Player (Hidden) -->
-    <audio id="narrationAudio" preload="metadata">
-        <source src="narration.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
 
-    <!-- Audio Control Button -->
-    <div class="audio-control">
-        <button class="audio-btn" id="audioBtn" aria-label="Play narration">
-            <svg class="progress-ring">
-                <circle class="progress-ring-circle" cx="36" cy="36" r="36"></circle>
-            </svg>
-            <span class="audio-icon play-icon">▶</span>
-            <span class="audio-icon pause-icon">❚❚</span>
-        </button>
-        <div class="audio-tooltip">Listen to narration</div>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Chromatic Background -->
+    <div class="chromatic-bg" id="chromaticBg"></div>
+
+    <!-- Vein Pattern -->
+    <div class="vein-pattern" id="veinPattern"></div>
+
+    <!-- Giant Leaf Background -->
+    <div class="leaf-bg" id="leafBg">
+        <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="leafGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#2d5016;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#1a2e0a;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <!-- Main Leaf Shape -->
+            <path d="M100 20 Q60 60 40 110 Q30 150 100 270 Q170 150 160 110 Q140 60 100 20" 
+                  fill="url(#leafGradient)" 
+                  id="leafShape"/>
+            <!-- Central Vein -->
+            <line x1="100" y1="20" x2="100" y2="270" 
+                  stroke="rgba(0,0,0,0.3)" 
+                  stroke-width="3"/>
+            <!-- Side Veins -->
+            <path d="M100 60 Q70 80 50 100" 
+                  stroke="rgba(0,0,0,0.2)" 
+                  stroke-width="1.5" 
+                  fill="none"/>
+            <path d="M100 60 Q130 80 150 100" 
+                  stroke="rgba(0,0,0,0.2)" 
+                  stroke-width="1.5" 
+                  fill="none"/>
+            <path d="M100 120 Q70 140 55 160" 
+                  stroke="rgba(0,0,0,0.2)" 
+                  stroke-width="1.5" 
+                  fill="none"/>
+            <path d="M100 120 Q130 140 145 160" 
+                  stroke="rgba(0,0,0,0.2)" 
+                  stroke-width="1.5" 
+                  fill="none"/>
+            <path d="M100 180 Q75 195 65 210" 
+                  stroke="rgba(0,0,0,0.2)" 
+                  stroke-width="1.5" 
+                  fill="none"/>
+            <path d="M100 180 Q125 195 135 210" 
+                  stroke="rgba(0,0,0,0.2)" 
+                  stroke-width="1.5" 
+                  fill="none"/>
+        </svg>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
+    <!-- Parallax Layers -->
+    <div class="parallax-layer" id="parallaxLayer1"></div>
+    <div class="parallax-layer" id="parallaxLayer2"></div>
+    <div class="parallax-layer" id="parallaxLayer3"></div>
+
+    <!-- Audio Player -->
+    <audio id="audio" preload="metadata">
+        <source src="narration.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="audio-player">
+        <div class="audio-orb" id="audioOrb">
+            <div class="audio-ripple"></div>
+            <div class="audio-ripple" style="animation-delay: 0.5s;"></div>
+            <div class="audio-ripple" style="animation-delay: 1s;"></div>
+            <span class="audio-icon" id="audioIcon">▶</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-minimap" id="navMinimap">
+        <div class="nav-dot active" data-index="0"></div>
+        <div class="nav-dot" data-index="1"></div>
+        <div class="nav-dot" data-index="2"></div>
+        <div class="nav-dot" data-index="3"></div>
+        <div class="nav-dot" data-index="4"></div>
+        <div class="nav-dot" data-index="5"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="scroll-container">
+
+        <!-- Hero Section -->
+        <section class="section hero-section" data-section="0">
             <h1 class="hero-title">The Last Light</h1>
             <p class="hero-subtitle">Cotinus coggygria</p>
-            <p class="hero-meta">A Study in Senescence</p>
-        </div>
-    </section>
+            <p class="hero-meta">A Chromatic Journey</p>
+            <div class="scroll-indicator">
+                <div class="scroll-line"></div>
+                <span style="font-size: 0.9rem; opacity: 0.7;">Scroll to witness the transformation</span>
+            </div>
+        </section>
 
-    <!-- Video Section -->
-    <section class="video-section">
-        <div class="container">
-            <div class="video-wrapper" id="videoWrapper">
+        <!-- Video Section -->
+        <section class="section video-section" data-section="1">
+            <div class="video-container">
                 <iframe 
                     src="https://www.youtube.com/embed/JdNwO9nasV4" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Story Section -->
-    <section class="story">
-        <div class="container">
-            
-            <div class="story-block" data-observe>
-                <h2 class="story-heading">The Photographer's Eye</h2>
+        <!-- Story Section 1 -->
+        <section class="section" data-section="2">
+            <div class="content-card">
+                <div class="section-number">01</div>
+                <h2 class="section-title">The Photographer's Eye</h2>
                 <p class="story-text">
-                    There's a particular quality of light that reveals itself only in stillness. Against the void of black velvet, this single leaf from the smoke bush—<em>Cotinus coggygria</em>—becomes a study in contradiction: simultaneously dying and incandescent.
+                    There's a particular quality of light that reveals itself only in stillness. Against the void of black velvet, this single leaf from the smoke bush—<em>Cotinus coggygria</em>—becomes a study in contradiction: <span class="emphasis">simultaneously dying and incandescent.</span>
                 </p>
                 <p class="story-text">
                     Watch how the backlighting transforms the leaf's architecture into stained glass. Each vein, once a highway of chlorophyll-rich cytoplasm, now serves as a dark scaffold against fields of burgundy and crimson. The texture is everything—mottled patches where decay has begun its tender work, contrasted with areas still holding onto their structural integrity.
                 </p>
             </div>
+        </section>
 
-            <div class="divider"></div>
-
-            <div class="story-block" data-observe>
-                <h2 class="story-heading">The Science of Fire</h2>
+        <!-- Story Section 2 -->
+        <section class="section" data-section="3">
+            <div class="content-card">
+                <div class="section-number">02</div>
+                <h2 class="section-title">The Science of Fire</h2>
                 <p class="story-text">
-                    What you're witnessing is not destruction—it's revelation. As autumn's shorter days trigger hormonal changes, the tree begins to withdraw resources. Chlorophyll breaks down first, unmasking the carotenoids that were there all along: the yellows and oranges hidden beneath summer's green.
+                    What you're witnessing is not destruction—it's <span class="emphasis">revelation</span>. As autumn's shorter days trigger hormonal changes, the tree begins to withdraw resources. Chlorophyll breaks down first, unmasking the carotenoids that were there all along: the yellows and oranges hidden beneath summer's green.
                 </p>
                 <p class="story-text">
-                    But this particular species goes further. In response to bright light and cool temperatures, the leaf synthesizes anthocyanins—those deep reds and purples—as a final act of photoprotection. It's creating sunscreen for cellular machinery it's about to dismantle. The result is this: a color palette that rivals any sunset,born from calculated abandon.
+                    But this particular species goes further. In response to bright light and cool temperatures, the leaf synthesizes anthocyanins—those deep reds and purples—as a final act of photoprotection. It's creating sunscreen for cellular machinery it's about to dismantle. The result is this: a color palette that rivals any sunset, born from calculated abandon.
                 </p>
             </div>
+        </section>
 
-            <div class="divider"></div>
-
-            <div class="story-block" data-observe>
-                <h2 class="story-heading">Resilience in Letting Go</h2>
+        <!-- Story Section 3 -->
+        <section class="section" data-section="4">
+            <div class="content-card">
+                <div class="section-number">03</div>
+                <h2 class="section-title">Resilience in Letting Go</h2>
                 <p class="story-text emphasis">
                     There is profound wisdom in the smoke bush's autumn performance. It doesn't resist the season; it celebrates it.
                 </p>
@@ -420,14 +746,16 @@
                     Each blotch, each wrinkled edge, each translucent patch where the cuticle has thinned—these are not failures. They are the marks of a life fully metabolized, resources carefully allocated, nutrients conscientiously reclaimed. The tree has already absorbed what it needs from this leaf: nitrogen, phosphorus, minerals painstakingly gathered over months of photosynthesis.
                 </p>
                 <p class="story-text">
-                    What remains is pure theater. The smoke bush knows that beauty and utility need not compete. In its final weeks, this leaf becomes art—a testament to the fact that letting go can be the most radiant act of all.
+                    What remains is pure theater. The smoke bush knows that beauty and utility need not compete. In its final weeks, this leaf becomes art—<span class="emphasis">a testament to the fact that letting go can be the most radiant act of all.</span>
                 </p>
             </div>
+        </section>
 
-            <div class="divider"></div>
-
-            <div class="story-block" data-observe>
-                <h2 class="story-heading">The Time-Lapse as Meditation</h2>
+        <!-- Story Section 4 -->
+        <section class="section" data-section="5">
+            <div class="content-card">
+                <div class="section-number">04</div>
+                <h2 class="section-title">The Time-Lapse as Meditation</h2>
                 <p class="story-text">
                     To compress days or weeks into seconds is to see what the naked eye cannot: the liquid poetry of change. The gradual intensification of red, the slow curling at the margins, the way light begins to pass through areas that were once opaque.
                 </p>
@@ -438,81 +766,237 @@
                     In the end, the leaf falls. But it falls burning.
                 </p>
             </div>
+        </section>
 
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p class="footer-text">A meditation on senescence, light, and the poetry of decay.</p>
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // Audio Player Controls
-        const audio = document.getElementById('narrationAudio');
-        const audioBtn = document.getElementById('audioBtn');
-        const progressCircle = document.querySelector('.progress-ring-circle');
-        const circumference = 2 * Math.PI * 36;
+        // Color Progression - From Green to Red
+        const colorStages = [
+            { bg: '#2d5016', accent: '#7cb518', leafGradient: ['#4a7c23', '#2d5016'] },  // Deep Green
+            { bg: '#4a7c23', accent: '#9bc73a', leafGradient: ['#7cb518', '#4a7c23'] },  // Bright Green
+            { bg: '#9bc73a', accent: '#f7b801', leafGradient: ['#b8d94e', '#7cb518'] },  // Yellow-Green
+            { bg: '#f7b801', accent: '#f18701', leafGradient: ['#ffc83a', '#f7b801'] },  // Golden Yellow
+            { bg: '#f18701', accent: '#d62828', leafGradient: ['#ff9a3c', '#f18701'] },  // Orange
+            { bg: '#d62828', accent: '#8b0000', leafGradient: ['#ff4444', '#d62828'] },  // Red
+            { bg: '#8b0000', accent: '#5c1a1a', leafGradient: ['#a01010', '#5c0000'] }   // Deep Red/Brown
+        ];
 
-        // Set initial progress circle
-        progressCircle.style.strokeDasharray = circumference;
-        progressCircle.style.strokeDashoffset = circumference;
+        const sections = document.querySelectorAll('.section');
+        const chromaticBg = document.getElementById('chromaticBg');
+        const leafBg = document.getElementById('leafBg');
+        const leafShape = document.getElementById('leafShape');
+        const veinPattern = document.getElementById('veinPattern');
+        const progressBar = document.getElementById('progressBar');
+        const navDots = document.querySelectorAll('.nav-dot');
+        const parallaxLayer1 = document.getElementById('parallaxLayer1');
+        const parallaxLayer2 = document.getElementById('parallaxLayer2');
+        const parallaxLayer3 = document.getElementById('parallaxLayer3');
 
-        // Toggle play/pause
-        audioBtn.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                audioBtn.classList.add('playing');
-            } else {
-                audio.pause();
-                audioBtn.classList.remove('playing');
+        // Create parallax particles
+        function createParticles() {
+            [parallaxLayer1, parallaxLayer2, parallaxLayer3].forEach((layer, index) => {
+                const particleCount = 15;
+                const speed = (index + 1) * 0.3;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'parallax-particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.top = Math.random() * 100 + '%';
+                    particle.style.width = (Math.random() * 20 + 10) + 'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                    particle.dataset.speed = speed;
+                    layer.appendChild(particle);
+                }
+            });
+        }
+        createParticles();
+
+        // Smooth scroll-based color transition
+        function updateColors() {
+            const scrollPercentage = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            const stageIndex = Math.min(Math.floor(scrollPercentage * colorStages.length), colorStages.length - 1);
+            const nextStageIndex = Math.min(stageIndex + 1, colorStages.length - 1);
+            
+            const stageProgress = (scrollPercentage * colorStages.length) % 1;
+            
+            const currentStage = colorStages[stageIndex];
+            const nextStage = colorStages[nextStageIndex];
+            
+            // Interpolate colors
+            const bgColor = interpolateColor(currentStage.bg, nextStage.bg, stageProgress);
+            const accentColor = interpolateColor(currentStage.accent, nextStage.accent, stageProgress);
+            
+            // Update background
+            chromaticBg.style.background = `radial-gradient(circle at ${50 + scrollPercentage * 50}% ${50 - scrollPercentage * 30}%, ${bgColor}, #000)`;
+            
+            // Update vein pattern color
+            veinPattern.style.color = accentColor;
+            
+            // Update leaf background
+            const leafGrad1 = interpolateColor(currentStage.leafGradient[0], nextStage.leafGradient[0], stageProgress);
+            const leafGrad2 = interpolateColor(currentStage.leafGradient[1], nextStage.leafGradient[1], stageProgress);
+            
+            const gradientDef = `
+                <linearGradient id="leafGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:${leafGrad1};stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:${leafGrad2};stop-opacity:1" />
+                </linearGradient>
+            `;
+            
+            leafShape.parentElement.querySelector('defs').innerHTML = gradientDef;
+            
+            // Update audio orb color
+            document.querySelector('.audio-orb').style.color = accentColor;
+            
+            // Update nav dots color
+            navDots.forEach(dot => {
+                dot.style.color = accentColor;
+            });
+            
+            // Update progress bar
+            progressBar.style.transform = `scaleX(${scrollPercentage})`;
+            
+            // Rotate and scale leaf based on scroll
+            leafBg.style.transform = `translate(-50%, -50%) rotate(${scrollPercentage * 180}deg) scale(${1 + scrollPercentage * 0.5})`;
+            leafBg.style.opacity = 0.15 + scrollPercentage * 0.15;
+        }
+
+        // Color interpolation helper
+        function interpolateColor(color1, color2, factor) {
+            const c1 = hexToRgb(color1);
+            const c2 = hexToRgb(color2);
+            
+            const r = Math.round(c1.r + (c2.r - c1.r) * factor);
+            const g = Math.round(c1.g + (c2.g - c1.g) * factor);
+            const b = Math.round(c1.b + (c2.b - c1.b) * factor);
+            
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 0, g: 0, b: 0 };
+        }
+
+        // Parallax effect
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            
+            document.querySelectorAll('.parallax-particle').forEach(particle => {
+                const speed = parseFloat(particle.dataset.speed);
+                const yPos = -(scrollY * speed);
+                particle.style.transform = `translate(${Math.sin(scrollY * 0.001) * 20}px, ${yPos}px)`;
+            });
+            
+            // 3D parallax for cards
+            document.querySelectorAll('.content-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const centerY = rect.top + rect.height / 2;
+                const distanceFromCenter = (window.innerHeight / 2 - centerY) / window.innerHeight;
+                
+                const rotateX = distanceFromCenter * 15;
+                const translateZ = Math.abs(distanceFromCenter) * -100;
+                
+                card.style.transform = `perspective(2000px) rotateX(${rotateX}deg) translateZ(${translateZ}px)`;
+            });
+        }
+
+        // Update active navigation dot
+        function updateNavigation() {
+            const scrollPercentage = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+            const activeIndex = Math.round(scrollPercentage * (sections.length - 1));
+            
+            navDots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeIndex);
+            });
+        }
+
+        // Navigation click handlers
+        navDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                const targetSection = sections[index];
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Scroll event handler
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    updateColors();
+                    updateParallax();
+                    updateNavigation();
+                    ticking = false;
+                });
+                ticking = true;
             }
         });
 
-        // Update progress circle
-        audio.addEventListener('timeupdate', () => {
-            const progress = audio.currentTime / audio.duration;
-            const offset = circumference - (progress * circumference);
-            progressCircle.style.strokeDashoffset = offset;
+        // Initial load
+        updateColors();
+        updateParallax();
+        updateNavigation();
+
+        // Audio Player
+        const audio = document.getElementById('audio');
+        const audioOrb = document.getElementById('audioOrb');
+        const audioIcon = document.getElementById('audioIcon');
+
+        audioOrb.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                audioOrb.classList.add('playing');
+                audioIcon.textContent = '❚❚';
+            } else {
+                audio.pause();
+                audioOrb.classList.remove('playing');
+                audioIcon.textContent = '▶';
+            }
         });
 
-        // Reset when audio ends
         audio.addEventListener('ended', () => {
-            audioBtn.classList.remove('playing');
-            progressCircle.style.strokeDashoffset = circumference;
+            audioOrb.classList.remove('playing');
+            audioIcon.textContent = '▶';
         });
 
-        // Intersection Observer for scroll-triggered animations
-        const observerOptions = {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+        // Mouse parallax effect on cards
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.content-card');
+            
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -5;
+                const rotateY = ((x - centerX) / centerX) * 5;
+                
+                if (e.clientX >= rect.left && e.clientX <= rect.right &&
+                    e.clientY >= rect.top && e.clientY <= rect.bottom) {
+                    card.style.transform = `perspective(2000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
                 }
             });
-        }, observerOptions);
-
-        // Observe all story blocks
-        document.querySelectorAll('[data-observe]').forEach(el => {
-            observer.observe(el);
         });
 
-        // Observe video wrapper
-        const videoWrapper = document.getElementById('videoWrapper');
-        observer.observe(videoWrapper);
-
-        // Smooth scroll behavior
-        document.documentElement.style.scrollBehavior = 'smooth';
+        // Reset card transform when mouse leaves
+        document.querySelectorAll('.content-card').forEach(card => {
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
     </script>
 
 </body>
 </html>
-
-
