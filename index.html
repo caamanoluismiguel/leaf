@@ -136,18 +136,17 @@
             line-height: 0.9;
             letter-spacing: -0.04em;
             margin-bottom: 30px;
-            transform-style: preserve-3d;
             animation: heroReveal 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
 
         @keyframes heroReveal {
             from {
                 opacity: 0;
-                transform: translateZ(-500px) rotateX(90deg);
+                transform: translateY(100px);
             }
             to {
                 opacity: 1;
-                transform: translateZ(0) rotateX(0deg);
+                transform: translateY(0);
             }
         }
 
@@ -243,7 +242,7 @@
             }
         }
 
-        /* Content Cards with 3D Parallax */
+        /* Content Cards - WITH PARALLAX */
         .content-card {
             max-width: 900px;
             width: 100%;
@@ -279,14 +278,6 @@
 
         .content-card:hover::before {
             opacity: 1;
-        }
-
-        .content-card:hover {
-            transform: translateY(-20px) scale(1.02);
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 
-                0 50px 120px rgba(0, 0, 0, 0.6),
-                inset 0 0 100px rgba(255, 255, 255, 0.05);
         }
 
         .section-number {
@@ -354,7 +345,7 @@
             opacity: 0.5;
         }
 
-        /* Video Section */
+        /* Video Section - NO PARALLAX */
         .video-section {
             min-height: 120vh;
             display: flex;
@@ -371,8 +362,7 @@
             overflow: hidden;
             box-shadow: 
                 0 50px 150px rgba(0, 0, 0, 0.8);
-            transform-style: preserve-3d;
-            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.3s ease;
         }
 
         .video-container::before {
@@ -404,7 +394,7 @@
         }
 
         .video-container:hover {
-            transform: scale(1.05) rotateY(5deg);
+            transform: scale(1.05);
         }
 
         .video-container iframe {
@@ -413,17 +403,17 @@
             border: none;
         }
 
-        /* Audio Orb */
+        /* Audio Orb - BIGGER AND EASIER TO CLICK */
         .audio-player {
             position: fixed;
-            bottom: 50px;
-            right: 50px;
+            bottom: 30px;
+            right: 30px;
             z-index: 1000;
         }
 
         .audio-orb {
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, 
                 rgba(255, 255, 255, 0.3),
@@ -437,15 +427,13 @@
             box-shadow: 
                 0 20px 60px currentColor,
                 inset 0 -10px 30px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.3s ease;
             border: 3px solid rgba(255, 255, 255, 0.2);
+            touch-action: manipulation;
         }
 
-        .audio-orb:hover {
-            transform: scale(1.1) translateY(-5px);
-            box-shadow: 
-                0 30px 80px currentColor,
-                inset 0 -15px 40px rgba(0, 0, 0, 0.5);
+        .audio-orb:active {
+            transform: scale(0.95);
         }
 
         .audio-orb.playing {
@@ -482,7 +470,7 @@
         }
 
         .audio-icon {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: white;
             filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
             z-index: 1;
@@ -508,62 +496,42 @@
             box-shadow: 0 0 20px currentColor;
         }
 
-        /* Floating Text Particles */
-        .text-particle {
-            position: absolute;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            opacity: 0.15;
-            pointer-events: none;
-            animation: textFloat 15s ease-in-out infinite;
-        }
-
-        @keyframes textFloat {
-            0%, 100% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 0.1;
-            }
-            50% {
-                transform: translate(50px, -100px) rotate(10deg);
-                opacity: 0.2;
-            }
-        }
-
-        /* Navigation Mini Map */
+        /* Navigation Mini Map - BIGGER AND EASIER TO CLICK */
         .nav-minimap {
             position: fixed;
-            right: 40px;
+            right: 30px;
             top: 50%;
             transform: translateY(-50%);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
             z-index: 100;
         }
 
         .nav-dot {
-            width: 14px;
-            height: 14px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.3);
             cursor: pointer;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: all 0.3s ease;
             border: 2px solid transparent;
+            touch-action: manipulation;
         }
 
         .nav-dot::before {
             content: '';
             position: absolute;
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             border: 2px solid currentColor;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
             opacity: 0;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
         }
 
         .nav-dot.active {
@@ -578,9 +546,8 @@
             opacity: 0.5;
         }
 
-        .nav-dot:hover {
-            background: currentColor;
-            transform: scale(1.2);
+        .nav-dot:active {
+            transform: scale(0.9);
         }
 
         /* Shake Detection Leaves */
@@ -644,21 +611,27 @@
             }
 
             .audio-player {
-                bottom: 30px;
-                right: 30px;
+                bottom: 20px;
+                right: 20px;
             }
 
             .audio-orb {
-                width: 80px;
-                height: 80px;
+                width: 70px;
+                height: 70px;
             }
 
             .audio-icon {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
             }
 
             .nav-minimap {
-                right: 20px;
+                right: 15px;
+                gap: 15px;
+            }
+
+            .nav-dot {
+                width: 16px;
+                height: 16px;
             }
 
             .leaf-bg {
@@ -707,15 +680,12 @@
                     <stop offset="100%" style="stop-color:#1a2e0a;stop-opacity:1" />
                 </linearGradient>
             </defs>
-            <!-- Main Leaf Shape -->
             <path d="M100 20 Q60 60 40 110 Q30 150 100 270 Q170 150 160 110 Q140 60 100 20" 
                   fill="url(#leafGradient)" 
                   id="leafShape"/>
-            <!-- Central Vein -->
             <line x1="100" y1="20" x2="100" y2="270" 
                   stroke="rgba(0,0,0,0.3)" 
                   stroke-width="3"/>
-            <!-- Side Veins -->
             <path d="M100 60 Q70 80 50 100" 
                   stroke="rgba(0,0,0,0.2)" 
                   stroke-width="1.5" 
@@ -788,9 +758,10 @@
 
         <!-- Video Section -->
         <section class="section video-section" data-section="1">
-            <div class="video-container">
+            <div class="video-container" id="videoContainer">
                 <iframe 
-                    src="https://www.youtube.com/embed/JdNwO9nasV4" 
+                    id="youtubeVideo"
+                    src="https://www.youtube.com/embed/JdNwO9nasV4?autoplay=1&mute=1&loop=1&playlist=JdNwO9nasV4&controls=0&modestbranding=1&rel=0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
@@ -864,13 +835,13 @@
     <script>
         // Color Progression - From Green to Red
         const colorStages = [
-            { bg: '#2d5016', accent: '#7cb518', leafGradient: ['#4a7c23', '#2d5016'] },  // Deep Green
-            { bg: '#4a7c23', accent: '#9bc73a', leafGradient: ['#7cb518', '#4a7c23'] },  // Bright Green
-            { bg: '#9bc73a', accent: '#f7b801', leafGradient: ['#b8d94e', '#7cb518'] },  // Yellow-Green
-            { bg: '#f7b801', accent: '#f18701', leafGradient: ['#ffc83a', '#f7b801'] },  // Golden Yellow
-            { bg: '#f18701', accent: '#d62828', leafGradient: ['#ff9a3c', '#f18701'] },  // Orange
-            { bg: '#d62828', accent: '#8b0000', leafGradient: ['#ff4444', '#d62828'] },  // Red
-            { bg: '#8b0000', accent: '#5c1a1a', leafGradient: ['#a01010', '#5c0000'] }   // Deep Red/Brown
+            { bg: '#2d5016', accent: '#7cb518', leafGradient: ['#4a7c23', '#2d5016'] },
+            { bg: '#4a7c23', accent: '#9bc73a', leafGradient: ['#7cb518', '#4a7c23'] },
+            { bg: '#9bc73a', accent: '#f7b801', leafGradient: ['#b8d94e', '#7cb518'] },
+            { bg: '#f7b801', accent: '#f18701', leafGradient: ['#ffc83a', '#f7b801'] },
+            { bg: '#f18701', accent: '#d62828', leafGradient: ['#ff9a3c', '#f18701'] },
+            { bg: '#d62828', accent: '#8b0000', leafGradient: ['#ff4444', '#d62828'] },
+            { bg: '#8b0000', accent: '#5c1a1a', leafGradient: ['#a01010', '#5c0000'] }
         ];
 
         const sections = document.querySelectorAll('.section');
@@ -880,10 +851,10 @@
         const veinPattern = document.getElementById('veinPattern');
         const progressBar = document.getElementById('progressBar');
         const navDots = document.querySelectorAll('.nav-dot');
+        const gyroIndicator = document.getElementById('gyroIndicator');
         const parallaxLayer1 = document.getElementById('parallaxLayer1');
         const parallaxLayer2 = document.getElementById('parallaxLayer2');
         const parallaxLayer3 = document.getElementById('parallaxLayer3');
-        const gyroIndicator = document.getElementById('gyroIndicator');
 
         // Mobile Detection
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -891,7 +862,6 @@
         // Gyroscope Variables
         let gyroX = 0;
         let gyroY = 0;
-        let gyroZ = 0;
         let gyroActive = false;
 
         // Shake Detection Variables
@@ -943,7 +913,6 @@
                 gyroActive = true;
                 gyroIndicator.classList.add('active');
                 
-                // Hide indicator after 3 seconds
                 setTimeout(() => {
                     gyroIndicator.classList.remove('active');
                 }, 3000);
@@ -956,9 +925,8 @@
 
         // Handle Device Orientation (Tilt)
         function handleOrientation(event) {
-            gyroX = event.beta || 0;  // Front-to-back tilt (-180 to 180)
-            gyroY = event.gamma || 0; // Left-to-right tilt (-90 to 90)
-            gyroZ = event.alpha || 0; // Compass direction (0 to 360)
+            gyroX = event.beta || 0;
+            gyroY = event.gamma || 0;
         }
 
         // Handle Device Motion (Shake Detection)
@@ -974,11 +942,10 @@
 
             if ((deltaX > shakeThreshold || deltaY > shakeThreshold || deltaZ > shakeThreshold)) {
                 const now = Date.now();
-                if (now - lastShakeTime > 500) { // Debounce shake
+                if (now - lastShakeTime > 500) {
                     createShakeLeaves();
                     lastShakeTime = now;
                     
-                    // Vibrate if supported
                     if (navigator.vibrate) {
                         navigator.vibrate(50);
                     }
@@ -1009,7 +976,6 @@
                 `;
                 document.body.appendChild(leaf);
 
-                // Remove after animation
                 setTimeout(() => {
                     leaf.remove();
                 }, 3000);
@@ -1062,17 +1028,13 @@
             const currentStage = colorStages[stageIndex];
             const nextStage = colorStages[nextStageIndex];
             
-            // Interpolate colors
             const bgColor = interpolateColor(currentStage.bg, nextStage.bg, stageProgress);
             const accentColor = interpolateColor(currentStage.accent, nextStage.accent, stageProgress);
             
-            // Update background
             chromaticBg.style.background = `radial-gradient(circle at ${50 + scrollPercentage * 50}% ${50 - scrollPercentage * 30}%, ${bgColor}, #000)`;
             
-            // Update vein pattern color
             veinPattern.style.color = accentColor;
             
-            // Update leaf background
             const leafGrad1 = interpolateColor(currentStage.leafGradient[0], nextStage.leafGradient[0], stageProgress);
             const leafGrad2 = interpolateColor(currentStage.leafGradient[1], nextStage.leafGradient[1], stageProgress);
             
@@ -1085,22 +1047,18 @@
             
             leafShape.parentElement.querySelector('defs').innerHTML = gradientDef;
             
-            // Update audio orb color
             document.querySelector('.audio-orb').style.color = accentColor;
             
-            // Update nav dots color
             navDots.forEach(dot => {
                 dot.style.color = accentColor;
             });
             
-            // Update progress bar
             progressBar.style.transform = `scaleX(${scrollPercentage})`;
             
-            // Base rotation and scale from scroll
             const baseRotation = scrollPercentage * 180;
             const baseScale = 1 + scrollPercentage * 0.5;
             
-            // Apply gyroscope if active (mobile)
+            // Apply gyroscope to background leaf if active (mobile)
             if (gyroActive && isMobile) {
                 const gyroRotationX = gyroX * 0.5;
                 const gyroRotationY = gyroY * 0.5;
@@ -1118,7 +1076,6 @@
             leafBg.style.opacity = 0.15 + scrollPercentage * 0.15;
         }
 
-        // Color interpolation helper
         function interpolateColor(color1, color2, factor) {
             const c1 = hexToRgb(color1);
             const c2 = hexToRgb(color2);
@@ -1139,10 +1096,11 @@
             } : { r: 0, g: 0, b: 0 };
         }
 
-        // Parallax effect with gyroscope enhancement
+        // Parallax effect with gyroscope EVERYWHERE EXCEPT VIDEO
         function updateParallax() {
             const scrollY = window.scrollY;
             
+            // Parallax particles
             document.querySelectorAll('.parallax-particle').forEach(particle => {
                 const speed = parseFloat(particle.dataset.speed);
                 let yPos = -(scrollY * speed);
@@ -1175,22 +1133,6 @@
                 
                 card.style.transform = `perspective(2000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
             });
-
-            // Video container gyroscope effect
-            if (gyroActive && isMobile) {
-                const videoContainer = document.querySelector('.video-container');
-                if (videoContainer) {
-                    const rect = videoContainer.getBoundingClientRect();
-                    if (rect.top < window.innerHeight && rect.bottom > 0) {
-                        videoContainer.style.transform = `
-                            perspective(2000px) 
-                            rotateX(${gyroX * 0.4}deg) 
-                            rotateY(${gyroY * 0.4}deg) 
-                            scale(1)
-                        `;
-                    }
-                }
-            }
         }
 
         // Update active navigation dot
@@ -1215,6 +1157,7 @@
         function animationLoop() {
             if (gyroActive && isMobile) {
                 updateParallax();
+                updateColors();
             }
             requestAnimationFrame(animationLoop);
         }
@@ -1263,7 +1206,7 @@
             audioIcon.textContent = '▶';
         });
 
-        // Mouse parallax effect on cards (desktop)
+        // Mouse parallax effect on cards (desktop only)
         if (!isMobile) {
             document.addEventListener('mousemove', (e) => {
                 const cards = document.querySelectorAll('.content-card');
