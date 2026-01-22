@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Light | A Study in Senescence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #121212;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a8a8a8;
+            --accent: #c44536;
+            --serif: 'Playfair Display', serif;
+            --sans: 'Inter', sans-serif;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--sans);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.3s forwards;
+        }
+
+        .hero-subtitle {
+            font-family: var(--serif);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 32px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.6s forwards;
+        }
+
+        .hero-meta {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-out 0.9s forwards;
+        }
+
+        /* Audio Player */
+        .audio-control {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 1000;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+        }
+
+        .audio-btn {
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(196, 69, 54, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(196, 69, 54, 0.6);
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .audio-icon {
+            font-size: 24px;
+            color: var(--bg-primary);
+            font-weight: 500;
+        }
+
+        .audio-btn.playing .pause-icon {
+            display: block;
+        }
+
+        .audio-btn.playing .play-icon {
+            display: none;
+        }
+
+        .audio-btn:not(.playing) .pause-icon {
+            display: none;
+        }
+
+        .audio-btn:not(.playing) .play-icon {
+            display: block;
+        }
+
+        .audio-tooltip {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(18, 18, 18, 0.95);
+            padding: 12px 20px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .audio-control:hover .audio-tooltip {
+            opacity: 1;
+        }
+
+        .progress-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 72px;
+            height: 72px;
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke: var(--accent);
+            fill: transparent;
+            stroke-width: 2;
+            stroke-dasharray: 226;
+            stroke-dashoffset: 226;
+            transition: stroke-dashoffset 0.3s ease;
+            opacity: 0.3;
+        }
+
+        .audio-btn.playing .progress-ring-circle {
+            opacity: 1;
+        }
+
+        /* Video Section */
+        .video-section {
+            padding: 120px 0;
+            background: var(--bg-secondary);
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            margin: 0 auto;
+            aspect-ratio: 9 / 16;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .video-wrapper.visible {
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Story Section */
+        .story {
+            padding: 120px 0;
+        }
+
+        .story-block {
+            margin-bottom: 80px;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .story-block.visible {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .story-heading {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .story-text {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            max-width: 65ch;
+            font-weight: 300;
+        }
+
+        .story-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .story-text.emphasis {
+            color: var(--text-primary);
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .divider {
+            width: 60px;
+            height: 2px;
+            background: var(--accent);
+            margin: 60px 0;
+            opacity: 0.5;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 80px 0 40px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            .story {
+                padding: 80px 0;
+            }
+
+            .video-section {
+                padding: 80px 0;
+            }
+
+            .story-block {
+                margin-bottom: 60px;
+            }
+
+            .audio-control {
+                bottom: 24px;
+                right: 24px;
+            }
+
+            .audio-btn {
+                width: 56px;
+                height: 56px;
+            }
+
+            .audio-icon {
+                font-size: 20px;
+            }
+
+            .progress-ring {
+                width: 64px;
+                height: 64px;
+            }
+
+            .audio-tooltip {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Audio Player (Hidden) -->
+    <audio id="narrationAudio" preload="metadata">
+        <source src="narration.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Audio Control Button -->
+    <div class="audio-control">
+        <button class="audio-btn" id="audioBtn" aria-label="Play narration">
+            <svg class="progress-ring">
+                <circle class="progress-ring-circle" cx="36" cy="36" r="36"></circle>
+            </svg>
+            <span class="audio-icon play-icon">▶</span>
+            <span class="audio-icon pause-icon">❚❚</span>
+        </button>
+        <div class="audio-tooltip">Listen to narration</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">The Last Light</h1>
+            <p class="hero-subtitle">Cotinus coggygria</p>
+            <p class="hero-meta">A Study in Senescence</p>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section">
+        <div class="container">
+            <div class="video-wrapper" id="videoWrapper">
+                <iframe 
+                    src="https://www.youtube.com/embed/JdNwO9nasV4" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story">
+        <div class="container">
+            
+            <div class="story-block" data-observe>
+                <h2 class="story-heading">The Photographer's Eye</h2>
+                <p class="story-text">
+                    There's a particular quality of light that reveals itself only in stillness. Against the void of black velvet, this single leaf from the smoke bush—<em>Cotinus coggygria</em>—becomes a study in contradiction: simultaneously dying and incandescent.
+                </p>
+                <p class="story-text">
+                    Watch how the backlighting transforms the leaf's architecture into stained glass. Each vein, once a highway of chlorophyll-rich cytoplasm, now serves as a dark scaffold against fields of burgundy and crimson. The texture is everything—mottled patches where decay has begun its tender work, contrasted with areas still holding onto their structural integrity.
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="story-block" data-observe>
+                <h2 class="story-heading">The Science of Fire</h2>
+                <p class="story-text">
+                    What you're witnessing is not destruction—it's revelation. As autumn's shorter days trigger hormonal changes, the tree begins to withdraw resources. Chlorophyll breaks down first, unmasking the carotenoids that were there all along: the yellows and oranges hidden beneath summer's green.
+                </p>
+                <p class="story-text">
+                    But this particular species goes further. In response to bright light and cool temperatures, the leaf synthesizes anthocyanins—those deep reds and purples—as a final act of photoprotection. It's creating sunscreen for cellular machinery it's about to dismantle. The result is this: a color palette that rivals any sunset,born from calculated abandon.
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="story-block" data-observe>
+                <h2 class="story-heading">Resilience in Letting Go</h2>
+                <p class="story-text emphasis">
+                    There is profound wisdom in the smoke bush's autumn performance. It doesn't resist the season; it celebrates it.
+                </p>
+                <p class="story-text">
+                    Each blotch, each wrinkled edge, each translucent patch where the cuticle has thinned—these are not failures. They are the marks of a life fully metabolized, resources carefully allocated, nutrients conscientiously reclaimed. The tree has already absorbed what it needs from this leaf: nitrogen, phosphorus, minerals painstakingly gathered over months of photosynthesis.
+                </p>
+                <p class="story-text">
+                    What remains is pure theater. The smoke bush knows that beauty and utility need not compete. In its final weeks, this leaf becomes art—a testament to the fact that letting go can be the most radiant act of all.
+                </p>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="story-block" data-observe>
+                <h2 class="story-heading">The Time-Lapse as Meditation</h2>
+                <p class="story-text">
+                    To compress days or weeks into seconds is to see what the naked eye cannot: the liquid poetry of change. The gradual intensification of red, the slow curling at the margins, the way light begins to pass through areas that were once opaque.
+                </p>
+                <p class="story-text">
+                    This is time made visible. Entropy made beautiful. A reminder that transformation—even when it leads to dormancy—can be a spectacle worth watching.
+                </p>
+                <p class="story-text emphasis">
+                    In the end, the leaf falls. But it falls burning.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">A meditation on senescence, light, and the poetry of decay.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Audio Player Controls
+        const audio = document.getElementById('narrationAudio');
+        const audioBtn = document.getElementById('audioBtn');
+        const progressCircle = document.querySelector('.progress-ring-circle');
+        const circumference = 2 * Math.PI * 36;
+
+        // Set initial progress circle
+        progressCircle.style.strokeDasharray = circumference;
+        progressCircle.style.strokeDashoffset = circumference;
+
+        // Toggle play/pause
+        audioBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                audioBtn.classList.add('playing');
+            } else {
+                audio.pause();
+                audioBtn.classList.remove('playing');
+            }
+        });
+
+        // Update progress circle
+        audio.addEventListener('timeupdate', () => {
+            const progress = audio.currentTime / audio.duration;
+            const offset = circumference - (progress * circumference);
+            progressCircle.style.strokeDashoffset = offset;
+        });
+
+        // Reset when audio ends
+        audio.addEventListener('ended', () => {
+            audioBtn.classList.remove('playing');
+            progressCircle.style.strokeDashoffset = circumference;
+        });
+
+        // Intersection Observer for scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all story blocks
+        document.querySelectorAll('[data-observe]').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Observe video wrapper
+        const videoWrapper = document.getElementById('videoWrapper');
+        observer.observe(videoWrapper);
+
+        // Smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+
+</body>
+</html>
+
+
